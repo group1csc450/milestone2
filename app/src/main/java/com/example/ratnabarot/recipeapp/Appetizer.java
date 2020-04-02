@@ -69,16 +69,7 @@ public class Appetizer extends AppCompatActivity {
         };
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    Intent login = new Intent (Appetizer.this, MainActivity.class);
-                    startActivity(login);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         recipe.setHasFixedSize(true);
         recipe.setLayoutManager(new LinearLayoutManager(this));
