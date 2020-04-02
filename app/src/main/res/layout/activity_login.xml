@@ -8,12 +8,12 @@
     tools:context=".Login">
 
     <EditText
-        android:id="@+id/logname"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName|text"
-        android:text="Username"
+        android:text="Email"
         android:textColor="#FAF9F9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.658" />
 
     <EditText
-        android:id="@+id/logpass"
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"

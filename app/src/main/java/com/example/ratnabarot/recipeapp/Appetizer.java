@@ -21,12 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Appetizer extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -47,12 +49,18 @@ public class Appetizer extends AppCompatActivity {
         // Create a query against the collection
         Query query = recipesRef.whereEqualTo("categoryName", "Appetizer");
 
+        //Query
+       // Query query = fStore.collection("appetizer");
+
         //RecyclerOptions
         FirestoreRecyclerOptions<CategoryModel> options = new FirestoreRecyclerOptions.Builder<CategoryModel>()
                 .setQuery(query, CategoryModel.class)
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
+
+
+
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,16 +72,19 @@ public class Appetizer extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull CategoryViewHolder holder, int position, @NonNull CategoryModel model) {
 
                 holder.list_name.setText(model.getRecipeName());
+                holder.list_desc.setText(model.getRecipeDescription());
+
 
             }
         };
 
 
 
-
         recipe.setHasFixedSize(true);
         recipe.setLayoutManager(new LinearLayoutManager(this));
         recipe.setAdapter(adapter);
+
+
 
     }
 
@@ -82,27 +93,35 @@ public class Appetizer extends AppCompatActivity {
     private class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         private TextView list_name;
+        private TextView list_desc;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             list_name = itemView.findViewById(R.id.list_recipeName);
+            list_desc = itemView.findViewById(R.id.list_recipeDescription);
+
 
         }
     }
 
     @Override
-    protected void onStop(){
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (adapter != null) {
+            adapter.stopListening();
+
+        }
+
+
+    }
 
 
 
