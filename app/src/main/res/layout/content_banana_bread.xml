@@ -9,9 +9,9 @@
     tools:showIn="@layout/activity_banana_bread">
 
     <TextView
+        android:id="@+id/banana_bread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+        android:layout_margin="@dimen/text_margin" />
 
 </androidx.core.widget.NestedScrollView>

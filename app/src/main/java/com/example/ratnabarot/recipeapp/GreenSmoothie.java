@@ -2,6 +2,13 @@ package com.example.ratnabarot.recipeapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,17 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import java.util.ArrayList;
 
-public class StrawberrySquares extends AppCompatActivity {
+public class GreenSmoothie extends AppCompatActivity {
 
     FirebaseFirestore fStore;
     TextView textView;
@@ -29,7 +28,7 @@ public class StrawberrySquares extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_strawberry_squares);
+        setContentView(R.layout.activity_green_smoothie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,7 +36,7 @@ public class StrawberrySquares extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent login = new Intent (StrawberrySquares.this, MainActivity.class);
+                Intent login = new Intent (GreenSmoothie.this, MainActivity.class);
                 startActivity(login);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -46,11 +45,11 @@ public class StrawberrySquares extends AppCompatActivity {
 
         fStore = FirebaseFirestore.getInstance();
 
-        textView = findViewById(R.id.strawberry_squares);
+        textView = findViewById(R.id.green_smoothie);
 
         //receive data
         fStore.collection("ingredients")
-                .whereEqualTo("recipeName", "STRAWBERRY SQUARES")
+                .whereEqualTo("recipeName", "SUPERFOOD PB BANANA AND CACAO GREEN SMOOTHIE")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -88,7 +87,7 @@ public class StrawberrySquares extends AppCompatActivity {
 
         //receive data
         fStore.collection("instructions")
-                .whereEqualTo("recipeName", "STRAWBERRY SQUARES")
+                .whereEqualTo("recipeName", "SUPERFOOD PB BANANA AND CACAO GREEN SMOOTHIE")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

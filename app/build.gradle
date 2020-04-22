@@ -36,11 +36,10 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
 
     //glide
-//    implementation 'com.github.bumptech.glide:glide:4.11.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
 
     //implement multidex due to issues with classes fitting in single dex
     implementation 'com.android.support:multidex:1.0.3'

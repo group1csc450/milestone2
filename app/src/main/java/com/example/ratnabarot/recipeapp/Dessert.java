@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +29,8 @@ public class Dessert extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -58,11 +61,10 @@ public class Dessert extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -72,6 +74,9 @@ public class Dessert extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
+                Glide.with(Dessert.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
 
             }
@@ -86,7 +91,7 @@ public class Dessert extends AppCompatActivity {
 
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView list_name;
         private TextView list_desc;
@@ -96,8 +101,43 @@ public class Dessert extends AppCompatActivity {
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Dessert.this, CoconutPie.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Dessert.this, CoconutMacaroonNests.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Dessert.this, BananaBread.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Dessert.this, LemonCheesecake.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    intent = new Intent(Dessert.this, StrawberrySquares.class);
+                    startActivity(intent);
+                    break;
+                case 5:
+                    intent = new Intent(Dessert.this, StrawberriesRomanoff.class);
+                    startActivity(intent);
+                default:
+                    break;
+            };
         }
     }
 
@@ -115,6 +155,7 @@ public class Dessert extends AppCompatActivity {
             adapter.stopListening();
 
         }
+
 
 
     }

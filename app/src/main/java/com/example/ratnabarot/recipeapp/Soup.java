@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +30,8 @@ public class Soup extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -59,11 +62,10 @@ public class Soup extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -73,6 +75,9 @@ public class Soup extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
+                Glide.with(Soup.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
 
             }
@@ -88,7 +93,7 @@ public class Soup extends AppCompatActivity {
 
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView list_name;
         private TextView list_desc;
@@ -98,8 +103,41 @@ public class Soup extends AppCompatActivity {
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Soup.this, CoconutClams.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Soup.this, SalmonChowder.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Soup.this, PumpkinGinger.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Soup.this, ChickpeaTomatoRosemary.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    intent = new Intent(Soup.this, GreenDetox.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            };
         }
     }
 
@@ -121,35 +159,4 @@ public class Soup extends AppCompatActivity {
 
     }
 
-    //Onclick event for smoothie
-    //Clicking on the smoothie button will take the user to Smoothie Recipes
-    public void Soup1(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSoup1Recipes = new Intent(Soup.this, CoconutClams.class);
-        startActivity(openSoup1Recipes);
-    }
-
-    public void Soup2(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSoup2Recipes = new Intent(Soup.this, PumpkinGinger.class);
-        startActivity(openSoup2Recipes);
-    }
-
-    public void Soup3(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSoup3Recipes = new Intent(Soup.this, GreenDetox.class);
-        startActivity(openSoup3Recipes);
-    }
-
-    public void Soup4(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSoup4Recipes = new Intent(Soup.this, SalmonChowder.class);
-        startActivity(openSoup4Recipes);
-    }
-
-    public void Soup5(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSoup5Recipes = new Intent(Soup.this, ChickpeaTomatoRosemary.class);
-        startActivity(openSoup5Recipes);
-    }
 }

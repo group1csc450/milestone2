@@ -6,12 +6,15 @@ public class CategoryModel {
 
     private String recipeDescription;
 
+    private String recipeImage;
+
 
     private CategoryModel() {}
 
-    private CategoryModel(String recipeName, String recipeDescription) {
+    private CategoryModel(String recipeName, String recipeDescription, String recipeImage) {
         this.recipeName = recipeName;
         this.recipeDescription = recipeDescription;
+        this.recipeImage = recipeImage;
 
 
     }
@@ -32,5 +35,9 @@ public class CategoryModel {
         this.recipeDescription = recipeDescription;
     }
 
+    public String getRecipeImage() {return recipeImage;}
 
+    public void setRecipeImage(String recipeImage) {
+        this.recipeImage = recipeImage;
+    }
 }

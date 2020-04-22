@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +29,8 @@ public class Drink extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -58,11 +61,10 @@ public class Drink extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -72,6 +74,9 @@ public class Drink extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
+                Glide.with(Drink.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
 
             }
@@ -86,7 +91,7 @@ public class Drink extends AppCompatActivity {
 
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView list_name;
         private TextView list_desc;
@@ -96,8 +101,41 @@ public class Drink extends AppCompatActivity {
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Drink.this, BlueberryOatmeal.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Drink.this, TropicalPapayaBatido.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Drink.this, PinaBananaColada.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Drink.this, GreenSmoothie.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    intent = new Intent(Drink.this, SummerMango.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            };
         }
     }
 
@@ -119,35 +157,4 @@ public class Drink extends AppCompatActivity {
 
     }
 
-    //Onclick event for smoothie
-    //Clicking on the smoothie button will take the user to Smoothie Recipes
-    public void Drink1(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openDrink1Recipes = new Intent(Drink.this, TropicalPapayaBatido.class);
-        startActivity(openDrink1Recipes);
-    }
-
-    public void Drink2(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openDrink2Recipes = new Intent(Drink.this, PinaBananaColada.class);
-        startActivity(openDrink2Recipes);
-    }
-
-    public void Drink3(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openDrink3Recipes = new Intent(Drink.this, SummerMango.class);
-        startActivity(openDrink3Recipes);
-    }
-
-    public void Drink4(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openDrink4Recipes = new Intent(Drink.this, BananaCacaoGreen.class);
-        startActivity(openDrink4Recipes);
-    }
-
-    public void Drink5(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openDrink5Recipes = new Intent(Drink.this, BlueberryOatmeal.class);
-        startActivity(openDrink5Recipes);
-    }
 }

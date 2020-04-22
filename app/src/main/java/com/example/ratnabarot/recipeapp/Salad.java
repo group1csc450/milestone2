@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +29,8 @@ public class Salad extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -58,11 +61,10 @@ public class Salad extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -72,7 +74,9 @@ public class Salad extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
-
+                Glide.with(Salad.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
             }
         };
@@ -86,7 +90,7 @@ public class Salad extends AppCompatActivity {
 
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView list_name;
         private TextView list_desc;
@@ -96,8 +100,40 @@ public class Salad extends AppCompatActivity {
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Salad.this, SpiralizedBeatMandarin.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Salad.this, BlackBeanQuinoa.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Salad.this, PeachArugula.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Salad.this, GreenBean.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    intent = new Intent(Salad.this, Chickpea.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            };
         }
     }
 
@@ -116,38 +152,7 @@ public class Salad extends AppCompatActivity {
 
         }
 
-
     }
 
-    //Onclick event for smoothie
-    //Clicking on the smoothie button will take the user to Smoothie Recipes
-    public void Salad1(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSalad1Recipes = new Intent(Salad.this, BlackBeanQuinoa.class);
-        startActivity(openSalad1Recipes);
-    }
 
-    public void Salad2(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSalad2Recipes = new Intent(Salad.this, Chickpea.class);
-        startActivity(openSalad2Recipes);
-    }
-
-    public void Salad3(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSalad3Recipes = new Intent(Salad.this, GreenBean.class);
-        startActivity(openSalad3Recipes);
-    }
-
-    public void Salad4(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSalad4Recipes = new Intent(Salad.this, SpiralizedBeatMandarin.class);
-        startActivity(openSalad4Recipes);
-    }
-
-    public void Salad5(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openSalad5Recipes = new Intent(Salad.this, PeachArugula.class);
-        startActivity(openSalad5Recipes);
-    }
 }

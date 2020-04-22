@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -29,6 +28,7 @@ public class Appetizer extends AppCompatActivity {
     RecyclerView recipe;
     FirebaseFirestore fStore;
 
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -59,11 +59,10 @@ public class Appetizer extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -73,9 +72,13 @@ public class Appetizer extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
-
+                Glide.with(Appetizer.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
             }
+
+
         };
 
 
@@ -90,18 +93,52 @@ public class Appetizer extends AppCompatActivity {
 
 
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView list_name;
         private TextView list_desc;
+
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
+            itemView.setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Appetizer.this, SweetPotatoTots.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Appetizer.this, GrilledVegetable.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Appetizer.this, Bruschetta.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Appetizer.this, ChickenNuggets.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    intent = new Intent(Appetizer.this, BakedCornCrab.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            };
         }
     }
 
@@ -124,37 +161,4 @@ public class Appetizer extends AppCompatActivity {
     }
 
 
-
-
-    //Onclick event for smoothie
-    //Clicking on the smoothie button will take the user to Smoothie Recipes
-    public void Appetizer1(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openAppetizer1Recipes = new Intent(Appetizer.this, BakedCornCrab.class);
-        startActivity(openAppetizer1Recipes);
-    }
-
-    public void Appetizer2(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openAppetizer2Recipes = new Intent(Appetizer.this, Bruschetta.class);
-        startActivity(openAppetizer2Recipes);
-    }
-
-    public void Appetizer3(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openAppetizer3Recipes = new Intent(Appetizer.this, GrilledVegetable.class);
-        startActivity(openAppetizer3Recipes);
-    }
-
-    public void Appetizer4(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openAppetizer4Recipes = new Intent(Appetizer.this, ChickenNuggets.class);
-        startActivity(openAppetizer4Recipes);
-    }
-
-    public void Appetizer5(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openAppetizer5Recipes = new Intent(Appetizer.this, SweetPotatoTots.class);
-        startActivity(openAppetizer5Recipes);
-    }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +29,8 @@ public class Breakfast extends AppCompatActivity {
 
     RecyclerView recipe;
     FirebaseFirestore fStore;
+
+    private ImageView imageView;
 
     private FirestoreRecyclerAdapter adapter;
 
@@ -58,11 +61,10 @@ public class Breakfast extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<CategoryModel, CategoryViewHolder>(options) {
 
-
-
             @NonNull
             @Override
             public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new CategoryViewHolder(view);
             }
@@ -72,7 +74,9 @@ public class Breakfast extends AppCompatActivity {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
-
+                Glide.with(Breakfast.this)
+                        .load(model.getRecipeImage())
+                        .into(imageView);
 
             }
         };
@@ -86,7 +90,7 @@ public class Breakfast extends AppCompatActivity {
 
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+    private class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView list_name;
         private TextView list_desc;
@@ -96,8 +100,37 @@ public class Breakfast extends AppCompatActivity {
 
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
+            imageView = itemView.findViewById(R.id.recipe_image);
 
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Intent intent;
+
+            switch(getAdapterPosition()) {
+                case 0:
+                    intent = new Intent(Breakfast.this, SteelCutOats.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(Breakfast.this, EggSandwich.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(Breakfast.this, AvocadoKaleToast.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(Breakfast.this, BroccoliCheddarQuiche.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            };
         }
     }
 
@@ -119,30 +152,5 @@ public class Breakfast extends AppCompatActivity {
 
     }
 
-    //Onclick event for smoothie
-    //Clicking on the smoothie button will take the user to Smoothie Recipes
-    public void Breakfast1(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openBreakfast1Recipes = new Intent(Breakfast.this, BroccoliCheddarQuiche.class);
-        startActivity(openBreakfast1Recipes);
-    }
-
-    public void Breakfast2(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openBreakfast2Recipes = new Intent(Breakfast.this, SteelCutOats.class);
-        startActivity(openBreakfast2Recipes);
-    }
-
-    public void Breakfast3(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openBreakfast3Recipes = new Intent(Breakfast.this, EggSandwich.class);
-        startActivity(openBreakfast3Recipes);
-    }
-
-    public void Breakfast4(View view){
-        //Takes to a second activity(options in smoothies & their ingredients) when the button is clicked.
-        Intent openBreakfast4Recipes = new Intent(Breakfast.this, AvocadoKaleToast.class);
-        startActivity(openBreakfast4Recipes);
-    }
 
 }
