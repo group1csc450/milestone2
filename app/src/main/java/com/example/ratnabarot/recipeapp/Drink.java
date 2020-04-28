@@ -10,6 +10,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -70,13 +72,32 @@ public class Drink extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull CategoryViewHolder holder, int position, @NonNull CategoryModel model) {
+            protected void onBindViewHolder(@NonNull final CategoryViewHolder holder, int position, @NonNull CategoryModel model) {
 
                 holder.list_name.setText(model.getRecipeName());
                 holder.list_desc.setText(model.getRecipeDescription());
                 Glide.with(Drink.this)
                         .load(model.getRecipeImage())
                         .into(imageView);
+
+                //like function
+                holder.numLike.setText(String.valueOf(model.getNumLike()));
+                holder.likeRecipe.setOnClickListener(new View.OnClickListener() {
+
+
+
+                    @Override
+                    public void onClick(View v) {
+
+                        //grabbing the document ID of the currently clicked recipe from the Recipe collection
+                        DocumentSnapshot snapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
+
+                        fStore.collection("recipe")
+                                .document(snapshot.getId())
+                                .update("numLike", FieldValue.increment(1));
+
+                    }
+                });
 
 
             }
@@ -95,6 +116,8 @@ public class Drink extends AppCompatActivity {
 
         private TextView list_name;
         private TextView list_desc;
+        private ImageView likeRecipe;
+        private TextView numLike;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +125,8 @@ public class Drink extends AppCompatActivity {
             list_name = itemView.findViewById(R.id.list_recipeName);
             list_desc = itemView.findViewById(R.id.list_recipeDescription);
             imageView = itemView.findViewById(R.id.recipe_image);
+            likeRecipe = itemView.findViewById(R.id.numLikes_btn);
+            numLike = itemView.findViewById(R.id.numLikes_Lbl);
 
 
             itemView.setOnClickListener(this);

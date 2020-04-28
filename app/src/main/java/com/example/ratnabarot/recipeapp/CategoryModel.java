@@ -9,6 +9,9 @@ public class CategoryModel {
     private String recipeImage;
 
 
+    private int numLike;
+
+
     private CategoryModel() {}
 
     private CategoryModel(String recipeName, String recipeDescription, String recipeImage) {
@@ -40,4 +43,15 @@ public class CategoryModel {
     public void setRecipeImage(String recipeImage) {
         this.recipeImage = recipeImage;
     }
+
+
+    public int getNumLike() {
+        return numLike;
+    }
+
+    public void setNumLike(int numLike) {
+        this.numLike = numLike;
+    }
+
+
 }
