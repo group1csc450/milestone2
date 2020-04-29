@@ -79,9 +79,6 @@ public class Categories extends AppCompatActivity {
         int id = item.getItemId();
 
         switch(id){
-            case R.id.action_settings:
-                Toast.makeText(this, "settings selected", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.action_home:
                 Intent openHome = new Intent(this, Login.class);
                 startActivity(openHome);
