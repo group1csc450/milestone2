@@ -37,17 +37,6 @@ public class BroccoliCheddarQuiche extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent login = new Intent (BroccoliCheddarQuiche.this, MainActivity.class);
-                startActivity(login);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         fStore = FirebaseFirestore.getInstance();
 
         textView = findViewById(R.id.quiche);
