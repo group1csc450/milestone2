@@ -14,17 +14,18 @@
         android:text="Welcome to the Recipe App"
         android:textColor="#FAF8F8"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnregister"
+        app:layout_constraintBottom_toTopOf="@+id/registerBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.869" />
 
     <Button
-        android:id="@+id/btnregister"
+        android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FAF7F7"
+        android:onClick="goToRegister"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

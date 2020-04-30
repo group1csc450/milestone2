@@ -22,9 +22,6 @@ public class Login extends AppCompatActivity {
     Button mLoginBtn;
     FirebaseAuth fAuth;
 
-    //new commit
-    //https://www.youtube.com/watch?v=4e8be8xseqE&t=43s
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
