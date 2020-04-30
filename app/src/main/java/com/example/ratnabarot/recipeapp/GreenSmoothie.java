@@ -13,20 +13,34 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.ratnabarot.recipeapp.models.Comment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class GreenSmoothie extends AppCompatActivity {
+public class GreenSmoothie extends AppCompatActivity implements
+        View.OnClickListener,
+        IMainActivity
+        {
 
     FirebaseFirestore fStore;
     TextView textView;
+
+    FirebaseAuth fAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private static final String TAG = "GreenSmoothie";
+    View mParentLayout;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +48,12 @@ public class GreenSmoothie extends AppCompatActivity {
         setContentView(R.layout.activity_green_smoothie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFab = findViewById(R.id.fab);
+        mParentLayout = findViewById(android.R.id.content);
+        fAuth = FirebaseAuth.getInstance();
+        setupFirebaseAuth();
+        mFab.setOnClickListener(this);
 
         fStore = FirebaseFirestore.getInstance();
 
@@ -114,6 +134,132 @@ public class GreenSmoothie extends AppCompatActivity {
 
                     }
                 });
+        Comments();
+    }
+
+    public void Comments() {
+
+        //read comments data
+        fStore.collection("comments")
+                .whereEqualTo("recipeName", "SUPERFOOD PB BANANA AND CACAO GREEN SMOOTHIE")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        textView.append("\n\nComments: \n\n");
+
+                        if (task.isSuccessful()) {
+
+                            for(QueryDocumentSnapshot document : task.getResult()) {
+
+                                //to check to see if data is read from Firestore
+                                Log.d("data received", document.getId() + " => " + document.getData());
+
+
+                                String comments = (String) document.get("content");
+
+                                // display the data into scrolling textView
+                                // write the data fields exactly as written in database
+                                textView.append(comments + "\n\n");
+
+                            }
+
+
+                        }
+
+                    }
+
+
+                });
+
+    }
+
+
+
+    @Override
+    public void createNewComment(String content) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference newCommentRef = db
+                .collection("comments")
+                .document();
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setComment_id(newCommentRef.getId());
+        comment.setUser_id(userId);
+        comment.setRecipeName("SUPERFOOD PB BANANA AND CACAO GREEN SMOOTHIE");
+
+        newCommentRef.set(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    makeSnackBarMessage("Created new comment");
+                }
+                else{
+                    makeSnackBarMessage("Failed. Check log.");
+                }
+            }
+        });
+    }
+
+    private void makeSnackBarMessage(String message){
+        Snackbar.make(mParentLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.fab:{
+                //create a new note
+                NewNoteDialog dialog = new NewNoteDialog();
+                dialog.show(getSupportFragmentManager(), getString(R.string.dialog_new_note));
+                break;
+            }
+        }
+    }
+
+    //Firebase Auth for help with getting the ID of the current user
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: started.");
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Intent intent = new Intent(GreenSmoothie.this, Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        }
     }
 
     //Dashboard - Options Menu

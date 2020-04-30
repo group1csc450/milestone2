@@ -1,4 +1,4 @@
-package com.example.ratnabarot.recipeapp;
+package com.example.ratnabarot.recipeapp.models;
 
 public class CategoryModel {
 

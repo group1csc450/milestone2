@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 
 import com.bumptech.glide.Glide;
+import com.example.ratnabarot.recipeapp.models.CategoryModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
